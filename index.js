@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRouter = require('./Router/userRoute');
+const formData = require('express-form-data');
 
 const port = 3000;
 
@@ -10,6 +11,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true}));
 
 app.use(bodyParser.json());
+
+app.use(formData.parse());
 
 mongoose.set("strictQuery", false);
 
