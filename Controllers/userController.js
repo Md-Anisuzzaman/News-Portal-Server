@@ -1,9 +1,9 @@
 const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require('../Model/userModel');
+const userModel = require('../Models/userModel');
 
-exports.InsertUser = async (req, res) => {
+exports.registerUser = async (req, res) => {
 
     const { username, email, password } = req.body;
     const securePass = await bcrypt.hash(password, 10);
@@ -17,17 +17,14 @@ exports.InsertUser = async (req, res) => {
 
     const user = await userModel.findOne({ email: email })
 
-    console.log("User Already exist--->", user);
-
     if (!user) {
-        // const result = await userModel.create(newUser);
         const result = await newUser.save();
         console.log(newUser);
 
         const token = await jwt.sign({
             username,
             email,
-            _id: newUser.id
+            _id: newUser._id
         }, "sabdhan__hack_korbina")
 
         res.status(200).json({
@@ -42,7 +39,7 @@ exports.InsertUser = async (req, res) => {
     }
 }
 
-exports.LoginUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
 
     const { email, password } = req.body;
    
@@ -65,7 +62,6 @@ exports.LoginUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     const result = await userModel.find({});
-    console.log(result);
     res.status(200).json({ result });
 }
 

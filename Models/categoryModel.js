@@ -2,30 +2,28 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({
 
     title: {
-        required: true,
         type: 'string',
-    },
-    creator: {
         required: true,
-        type: 'string',
     },
-
-    writter: {
+    author: {
+        type: 'string',
         required: true,
-        type: 'string',
     },
-
     image: {
-        required: true,
         type: 'string',
+        required: true,
     },
     description: {
-        required: true,
         type: 'string',
+        required: true,
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     },
     published_at: {
-        required: Date,
-        type: new Date().toLocaleString(),
+        type: Date,
+        default: new Date().toLocaleString(),
     }
 },
     {
