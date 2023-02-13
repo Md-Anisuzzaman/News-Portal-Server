@@ -18,7 +18,7 @@ const categorySchema = new mongoose.Schema({
         required: true,
     },
     creator: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'user'
     },
     published_at: {
