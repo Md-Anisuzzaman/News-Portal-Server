@@ -2,6 +2,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../Models/userModel');
+const {uploadFile} = require('./imageUploadControler');
 
 exports.registerUser = async (req, res) => {
 
@@ -42,7 +43,7 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
 
     const { email, password } = req.body;
-   
+
     const user = await userModel.findOne({ email: email }).exec();
     // const isMatch = await bcrypt.compare(password, user.password);
 
@@ -62,9 +63,46 @@ exports.loginUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     const result = await userModel.find({});
-    res.status(200).json({ result });
+    res.status(200).json(result);
 }
 
+exports.createUser = async (req, res) => {
+    const { username, email, password, mobile, address, gender, image } = req.body;
+    const securePass = await bcrypt.hash(password, 10);
+    let image_list = [];
+    if (req.files) {
+        if (req.files) {
+            const images = req.files.image;
+            console.log(images);
+            images.forEach((image) => {
+                image_list.push(uploadFile(image, "uploads/users"));
+            });
+        }
+    }
+
+    const newUser = new userModel({
+        username,
+        email,
+        password: securePass,
+        mobile,
+        address,
+        image: image_list,
+        gender,
+        role: "user"
+    });
+
+    const user = await userModel.findOne({ email: email })
+    if (!user) {
+        const result = await newUser.save();
+        console.log(result);
+        res.status(200).json(result);
+    }
+    else {
+        console.log("user exist");
+        res.status(404).json("Invalid Request");
+    }
+
+}
 exports.getSingleUser = async (req, res) => {
     const id = req.params.id
     const result = await userModel.findById(id);
@@ -106,5 +144,3 @@ exports.deleteUser = async (req, res) => {
     console.log("delete hoise----> ", result);
     res.status(200).json({ status: 'success', data: result })
 }
-
-

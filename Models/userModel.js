@@ -17,6 +17,22 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    image: {
+        type: 'array',
+        required: false
+    },
+    mobile: {
+        type: String,
+        required: false
+    },
+    address: {
+        type: String,
+        required: false
+    },
+    gender: {
+        type: String,
+        required: true,
+    },
     role: {
         type: String,
         default: "user"
@@ -26,6 +42,11 @@ const userSchema = new mongoose.Schema({
         default: date
     },
 },
+
+    {
+        timestamps: true,
+        versionKey: false
+    }
 
 );
 

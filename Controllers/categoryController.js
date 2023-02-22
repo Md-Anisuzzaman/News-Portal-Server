@@ -1,5 +1,5 @@
 const ObjectId = require('mongoose').Types.ObjectId;
-// const ObjectId = require('mongodb').ObjectID;
+const fs = require('fs-extra')
 const categoryModel = require('../Models/categoryModel')
 
 
@@ -20,10 +20,17 @@ exports.createCategory = async (req, res) => {
     });
 };
 
+exports.AllCategory = async (req, res, next) => {
+    const result = await categoryModel.find({});
+    res.status(200).json({ result: result });
+}
+
 exports.getCategory = async (req, res, next) => {
+    console.log(req.params);
     const result = await categoryModel.findOne({
-        _id:req.params.id
-    }).populate('creator').exec();
+        _id: ObjectId(req.params.id)
+    }).populate('creator');
+
 
     // const { id } = req.params;
     // const idmatch = { _id: id };
