@@ -8,7 +8,7 @@ router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 router.get("/delete-all", userController.deleteUser);
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 
 router.get("/user/test", (req, res) => {
