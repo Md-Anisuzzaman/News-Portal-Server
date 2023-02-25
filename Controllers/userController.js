@@ -2,7 +2,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../Models/userModel');
-const {uploadFile} = require('./imageUploadControler');
+const { uploadFile } = require('./imageUploadControler');
 
 exports.registerUser = async (req, res) => {
 
@@ -73,7 +73,6 @@ exports.createUser = async (req, res) => {
     if (req.files) {
         if (req.files) {
             const images = req.files.image;
-            console.log(images);
             images.forEach((image) => {
                 image_list.push(uploadFile(image, "uploads/users"));
             });
@@ -106,33 +105,38 @@ exports.createUser = async (req, res) => {
 exports.getSingleUser = async (req, res) => {
     const id = req.params.id
     const result = await userModel.findById(id);
-    console.log(result);
     res.status(200).json({ status: "success", result });
 }
 
 exports.updateUser = async (req, res) => {
 
-    const updateId = req.params.id;
-    const result = await userModel.updateOne(
-        { _id: ObjectId(updateId) },
-        { $set: { email: req.body.email } }
-    )
-    res.status(200).json({ result });
+    try {
+        const body = req.body;
+        
+        const updateId = body._id;
+        const image = body.image;
+
+        delete body._id;
+        delete body.image;
+
+        let result = await userModel.updateOne(
+            { _id: ObjectId(updateId) },
+            {
+                ...body,
+            }
+        )
+        result = await userModel.findById(updateId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({data: "Request failed", msg: error.message});
+    }
 }
 
 exports.makeAdmin = async (req, res) => {
 
     const updateId = req.params.id;
-    // console.log("here is role-----> ", role);
-
     const toAdmin = { _id: ObjectId(updateId) };
     const result = await userModel.updateOne(toAdmin, { $set: { role: "admin" } });
-
-    // const result = await userModel.updateOne(
-    //     { _id: ObjectId(updateId) },
-    //     { $set: { role: "admin" } }
-    // )
-
     res.status(200).json({ status: "make Admin succcesfully done", result });
 }
 
@@ -140,7 +144,6 @@ exports.deleteUser = async (req, res) => {
     const deleteId = req.params.id;
     const query = { _id: ObjectId(deleteId) };
     const result = await userModel.deleteOne(query);
-    // const result = await userModel.deleteMany();
     console.log("delete hoise----> ", result);
     res.status(200).json({ status: 'success', data: result })
 }

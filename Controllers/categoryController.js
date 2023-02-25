@@ -10,7 +10,6 @@ exports.createCategory = async (req, res) => {
     data.creator = req.userData.id;
 
     const newCategory = new categoryModel(data);
-    console.log(data);
     const result = await newCategory.save();
 
     res.status(200).json({

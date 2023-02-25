@@ -18,8 +18,9 @@ router.get("/user/test", (req, res) => {
 });
 
 router.get("/allusers", userController.getUser);
-router.post("/deleteUser/:id", userController.deleteUser);
-router.post("/updateUser/:id", userController.updateUser);
+router.get("/user/:id", userController.getSingleUser);
+router.post("/deleteuser/:id", userController.deleteUser);
+router.post("/updateuser", userController.updateUser);
 router.post("/makeAdmin/:id", userController.makeAdmin);
 
 
