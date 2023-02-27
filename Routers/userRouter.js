@@ -19,9 +19,9 @@ router.get("/user/test", (req, res) => {
 
 router.get("/allusers", userController.getUser);
 router.get("/user/:id", userController.getSingleUser);
-router.post("/deleteuser/:id", userController.deleteUser);
 router.post("/updateuser", userController.updateUser);
-router.post("/makeAdmin/:id", userController.makeAdmin);
+router.post("/makeAdmin", userController.makeAdmin);
+router.post("/deleteuser/:id", userController.deleteUser);
 
 
 module.exports = router;

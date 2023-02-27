@@ -102,6 +102,8 @@ exports.createUser = async (req, res) => {
     }
 
 }
+
+
 exports.getSingleUser = async (req, res) => {
     const id = req.params.id
     const result = await userModel.findById(id);
@@ -112,19 +114,28 @@ exports.updateUser = async (req, res) => {
 
     try {
         const body = req.body;
-        
         const updateId = body._id;
         const image = body.image;
 
         delete body._id;
-        delete body.image;
+        // delete body.image;
 
+        let image_list = [];
+        if (req.files) {
+            if (req.files) {
+                const images = req.files.image;
+                images.forEach((image) => {
+                    image_list.push(uploadFile(image, "uploads/users"));
+                });
+            }
+        }
+    
         let result = await userModel.updateOne(
             { _id: ObjectId(updateId) },
             {
                 ...body,
             }
-        )
+        )        
         result = await userModel.findById(updateId);
         res.status(200).json(result);
     } catch (error) {
@@ -133,11 +144,13 @@ exports.updateUser = async (req, res) => {
 }
 
 exports.makeAdmin = async (req, res) => {
-
-    const updateId = req.params.id;
-    const toAdmin = { _id: ObjectId(updateId) };
-    const result = await userModel.updateOne(toAdmin, { $set: { role: "admin" } });
-    res.status(200).json({ status: "make Admin succcesfully done", result });
+    const updateId = req.body._id;
+    let user = await userModel.findOne({ _id: ObjectId(updateId) })
+    user.role = req.body.role;
+    user.save()
+    res.json(user);
+    // const result = await userModel.updateOne(userId, { role:req.body.role});
+    // res.status(200).json({ status: "make Admin succcesfully done" });
 }
 
 exports.deleteUser = async (req, res) => {
