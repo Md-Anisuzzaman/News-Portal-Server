@@ -22,6 +22,7 @@ router.get("/user/:id", userController.getSingleUser);
 router.post("/updateuser", userController.updateUser);
 router.post("/makeAdmin", userController.makeAdmin);
 router.post("/deleteuser/:id", userController.deleteUser);
+// router.post("/deleteuser", userController.deleteUser);
 
 
 module.exports = router;

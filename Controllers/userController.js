@@ -42,7 +42,7 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
 
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     const user = await userModel.findOne({ email: email }).exec();
     // const isMatch = await bcrypt.compare(password, user.password);
@@ -54,7 +54,12 @@ exports.loginUser = async (req, res) => {
             id: user.id
         }, "sabdhan__hack_korbina")
 
-        res.status(200).json({ status: 'success', data: token })
+        res.status(200).json({
+            status: 'success', data: {
+                result: user,
+                token
+            }
+        })
     }
     else {
         res.status(400).json({ status: 'fail', data: "Not authorized user" })
@@ -129,17 +134,17 @@ exports.updateUser = async (req, res) => {
                 });
             }
         }
-    
+
         let result = await userModel.updateOne(
             { _id: ObjectId(updateId) },
             {
                 ...body,
             }
-        )        
+        )
         result = await userModel.findById(updateId);
         res.status(200).json(result);
     } catch (error) {
-        res.status(400).json({data: "Request failed", msg: error.message});
+        res.status(400).json({ data: "Request failed", msg: error.message });
     }
 }
 
@@ -160,3 +165,11 @@ exports.deleteUser = async (req, res) => {
     console.log("delete hoise----> ", result);
     res.status(200).json({ status: 'success', data: result })
 }
+
+// exports.deleteUser = async (req, res) => {
+//     // const deleteId = req.params.id;
+//     // const query = { _id: ObjectId(deleteId) };
+//     const result = await userModel.deleteMany();
+//     console.log("delete hoise----> ", result);
+//     res.status(200).json({ status: 'success', data: result })
+// }
