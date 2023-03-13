@@ -4,7 +4,16 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../Models/userModel');
 const { uploadFile } = require('./imageUploadControler');
 
+const { validationResult } = require('express-validator');
+
 exports.registerUser = async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            errors: errors.array()
+        });
+    }
 
     const { username, email, password } = req.body;
     const securePass = await bcrypt.hash(password, 10);
