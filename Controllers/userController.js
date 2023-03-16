@@ -50,13 +50,22 @@ exports.registerUser = async (req, res) => {
 }
 
 exports.loginUser = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            errors: errors.array()
+        });
+    }
 
-    const { email } = req.body;
+    const { email, password } = req.body;
 
     const user = await userModel.findOne({ email: email }).exec();
-    // const isMatch = await bcrypt.compare(password, user.password);
 
     if (user) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(422).json("Password not match");
+        }
         const token = jwt.sign({
             username: user.username,
             emails: user.email,

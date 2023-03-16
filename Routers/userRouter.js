@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body, check } = require('express-validator');
+const userModel = require('../Models/userModel');
 const authMiddleware = require("../Middleware/authMiddleWare");
 const userController = require('../Controllers/userController');
 
@@ -9,28 +10,47 @@ router.post("/register",
     [
         body('email')
             .normalizeEmail()
-            .notEmpty().withMessage('email is empty')
-            .isEmail().withMessage('not of email type')
+            .isEmail().withMessage('Not of email type')
+            .not().isEmpty()?.withMessage('Email is empty')
             .custom(async (value) => {
                 let user = await userModel.findOne({
                     email: value
                 })
                 if (user) {
-                    return Promise.reject('E-mail already in use');
+                    return Promise.reject('E-mail is already in use');
                 }
-            }).withMessage('E-mail already in use'),
+            }).withMessage('E-mail is already in use'),
 
         check('username')
-            .not().isEmpty().withMessage('username is required'),
+            .not().isEmpty().withMessage('Username is required'),
 
         body('password')
-            .not().isEmpty().withMessage('password is required')
+            .not().isEmpty().withMessage('Password is required')
             .isLength({
-                min: 6,
-            }).withMessage('min length 6'),
+                min: 8,
+            }).withMessage('Password minimum length 8'),
     ], userController.registerUser);
 
-router.post("/login", userController.loginUser);
+router.post("/login",
+    [
+        body('email')
+            .normalizeEmail()
+            .not().isEmpty().withMessage('Email is empty')
+            .isEmail().withMessage('Not of email type')
+            .custom(async (value) => {
+                let user = await userModel.findOne({
+                    email: value
+                })
+                if (!user) {
+                    return Promise.reject('Not Authenticated user email');
+                }
+            }).withMessage('Not Authenticated email'),
+
+        body('password')
+            .not().isEmpty().withMessage('Password is required'),
+    ],
+    userController.loginUser);
+
 router.get("/delete-all", userController.deleteUser);
 router.post("/adduser", userController.createUser);
 
