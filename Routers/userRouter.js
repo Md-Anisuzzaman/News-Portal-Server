@@ -5,7 +5,6 @@ const userModel = require('../Models/userModel');
 const authMiddleware = require("../Middleware/authMiddleWare");
 const userController = require('../Controllers/userController');
 
-
 router.post("/register",
     [
         body('email')
@@ -51,17 +50,17 @@ router.post("/login",
     ],
     userController.loginUser);
 
-router.get("/delete-all", userController.deleteUser);
-router.post("/adduser", userController.createUser);
+router.use(authMiddleware);
 
-// router.use(authMiddleware);
-
+router.get("/auth/checkuser", userController.checkUser);
 
 router.get("/user/test", (req, res) => {
     console.log("hello world");
     return res.status(200).json({ req: req.userData })
 });
 
+router.get("/delete-all", userController.deleteUser);
+router.post("/adduser", userController.createUser);
 router.get("/allusers", userController.getUser);
 router.get("/user/:id", userController.getSingleUser);
 router.post("/updateuser", userController.updateUser);

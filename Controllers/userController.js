@@ -6,6 +6,13 @@ const { uploadFile } = require('./imageUploadControler');
 
 const { validationResult } = require('express-validator');
 
+exports.checkUser = async (req, res) => {
+    id = req.userData._id;
+    let user = await userModel.findById(id);
+    console.log(user);
+    res.status(200).json(user);
+}
+
 exports.registerUser = async (req, res) => {
 
     const errors = validationResult(req);
@@ -183,11 +190,3 @@ exports.deleteUser = async (req, res) => {
     console.log("delete hoise----> ", result);
     res.status(200).json({ status: 'success', data: result })
 }
-
-// exports.deleteUser = async (req, res) => {
-//     // const deleteId = req.params.id;
-//     // const query = { _id: ObjectId(deleteId) };
-//     const result = await userModel.deleteMany();
-//     console.log("delete hoise----> ", result);
-//     res.status(200).json({ status: 'success', data: result })
-// }
