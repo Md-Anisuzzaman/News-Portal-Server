@@ -2,7 +2,6 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const fs = require('fs-extra')
 const categoryModel = require('../Models/categoryModel')
 
-
 exports.createCategory = async (req, res) => {
 
     let data = { ...req.body }
@@ -29,7 +28,6 @@ exports.getCategory = async (req, res, next) => {
     const result = await categoryModel.findOne({
         _id: ObjectId(req.params.id)
     }).populate('creator');
-
 
     // const { id } = req.params;
     // const idmatch = { _id: id };

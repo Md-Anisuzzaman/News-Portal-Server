@@ -52,12 +52,6 @@ router.post("/login",
 
 router.use(authMiddleware);
 
-router.get("/auth/checkuser", userController.checkUser);
-
-router.get("/user/test", (req, res) => {
-    console.log("hello world");
-    return res.status(200).json({ req: req.userData })
-});
 
 router.get("/delete-all", userController.deleteUser);
 router.post("/adduser", userController.createUser);
