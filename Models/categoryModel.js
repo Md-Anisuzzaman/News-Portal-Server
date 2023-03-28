@@ -9,6 +9,12 @@ const categorySchema = new mongoose.Schema({
         type: 'string',
         required: true,
     },
+    category: [{
+        name: {
+            type: 'string',
+            required: true,
+        }
+    }],
     image: {
         type: 'string',
         required: true,

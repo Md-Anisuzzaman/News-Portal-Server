@@ -81,3 +81,26 @@ const render = (lists) => {
 
 let htmlOutPut = render(arrObjs);
 outPut.innerHTML = htmlOutPut;
+
+const objs = [{
+    name: "juel",
+}]
+
+objs.push({ name: "author 1" },
+    { name: "author 2" })
+
+console.log(objs);
+
+const book = ({
+    title: 'Example Book',
+    authors: []
+});
+
+book.authors = book.authors.concat([
+    { name: 'Author 1' },
+    { name: 'Author 2' },
+    { name: 'Author 3' }
+]);
+
+
+console.log(book);
