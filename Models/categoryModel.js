@@ -2,26 +2,21 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({
 
     title: {
-        type: 'string',
-        required: true,
+        type: String,
+        required: true
     },
     author: {
-        type: 'string',
-        required: true,
+        type: String,
+        required: true
     },
-    category: [{
-        name: {
-            type: 'string',
-            required: true,
-        }
-    }],
+    category: [],
     image: {
-        type: 'string',
-        required: true,
+        type: String,
+        required: false
     },
     description: {
-        type: 'string',
-        required: true,
+        type: String,
+        required: true
     },
     creator: {
         type: mongoose.Types.ObjectId,
