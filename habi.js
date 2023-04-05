@@ -89,7 +89,7 @@ const objs = [{
 objs.push({ name: "author 1" },
     { name: "author 2" })
 
-console.log(objs);
+// console.log(objs);
 
 const book = ({
     title: 'Example Book',
@@ -102,5 +102,45 @@ book.authors = book.authors.concat([
     { name: 'Author 3' }
 ]);
 
+const paragraphs = document.querySelectorAll('#text-container p');
+const searchInput = document.querySelector('#search-input');
+const showMoreBtn = document.querySelector('#show-more-btn');
+const showLessBtn = document.querySelector('#show-less-btn');
 
-console.log(book);
+let showingMore = false;
+
+function toggleText() {
+    for (let i = 1; i < paragraphs.length; i++) {
+        if (showingMore) {
+            paragraphs[i].style.display = 'none';
+        } else {
+            paragraphs[i].style.display = 'block';
+        }
+    }
+
+    showingMore = !showingMore;
+    showMoreBtn.style.display = showingMore ? 'none' : 'block';
+    showLessBtn.style.display = showingMore ? 'block' : 'none';
+}
+
+function filterText() {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    for (let i = 0; i < paragraphs.length; i++) {
+        const paragraphText = paragraphs[i].textContent.toLowerCase();
+
+        if (paragraphText.includes(searchTerm)) {
+            paragraphs[i].style.display = 'block';
+        } else {
+            paragraphs[i].style.display = 'none';
+        }
+    }
+}
+
+showMoreBtn.addEventListener('click', toggleText);
+showLessBtn.addEventListener('click', toggleText);
+searchInput.addEventListener('input', filterText);
+
+
+
+// console.log(book);

@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
     <!-- <link rel="stylesheet" href="./style.css"> -->
+    <style>
+        #text-container p:not(:first-of-type) {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,10 +29,28 @@
             </div>
         </div>
     </div> -->
-    <div id="output">
-        
+
+    <div id="text-container">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, ipsum id gravida sagittis, diam diam
+            dignissim nisi, et aliquet lorem sapien eget velit. Aliquam pulvinar scelerisque nisl, eget consectetur
+            felis feugiat nec. Donec sollicitudin enim non elit maximus feugiat.</p>
+        <p>Quisque ullamcorper, tellus in sollicitudin consectetur, velit metus lacinia lacus, sit amet luctus nunc
+            lacus et ex. Vivamus tempor gravida turpis eu facilisis. Sed rhoncus purus sapien, ac mattis lacus tempor
+            eget. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+        <p>Integer malesuada, enim ac lobortis finibus, libero mauris dictum odio, nec tristique massa turpis in justo.
+            Phasellus laoreet arcu purus, ut ullamcorper augue fringilla id. Nullam efficitur dui eu enim malesuada, a
+            rhoncus nisl hendrerit. Aliquam euismod lectus vitae tellus consequat consequat.</p>
     </div>
- <script src="./habi.js"></script>
+
+    <input type="text" id="search-input" placeholder="Search">
+
+    <button id="show-more-btn">Show More</button>
+    <button id="show-less-btn">Show Less</button>
+
+    <div id="output">
+
+    </div>
+    <script src="./habi.js"></script>
 </body>
 
 </html>

@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
-const categorySchema = new mongoose.Schema({
+const newsSchema = new mongoose.Schema({
 
     title: {
         type: String,
         required: true
     },
     author: {
-        type: String,
-        required: true
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
     },
-    category: [],
+    // category: {
+    //     type: mongoose.Types.ObjectId,
+    //     ref: 'category'
+    // },
     image: {
         type: 'Array',
         required: false
@@ -18,6 +21,10 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // slug: {
+    //     type: String,
+    //     required: false
+    // },
     creator: {
         type: mongoose.Types.ObjectId,
         ref: 'user'
@@ -33,7 +40,7 @@ const categorySchema = new mongoose.Schema({
     },
 );
 
-const categoryModel = mongoose.model('category', categorySchema);
+const newsModel = mongoose.model('news', newsSchema);
 
-module.exports = categoryModel;
+module.exports = newsModel;
 

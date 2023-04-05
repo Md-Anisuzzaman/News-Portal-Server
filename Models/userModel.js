@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
-
 const date = moment().format('LLLL');
 
 const userSchema = new mongoose.Schema({
@@ -42,7 +41,6 @@ const userSchema = new mongoose.Schema({
         default: date
     },
 },
-
     {
         timestamps: true,
         versionKey: false
