@@ -1,13 +1,14 @@
 const ObjectId = require('mongoose').Types.ObjectId;
 const fs = require('fs-extra')
-const categoryModel = require('../Models/categoryModel')
+const newsModel = require('../Models/newsModel')
 const { uploadFile } = require('./imageUploadControler');
-const { Result } = require('express-validator');
+// const { Result } = require('express-validator');
 
-exports.createCategory = async (req, res) => {
+exports.createNews = async (req, res) => {
 
-    let { title, author, category, description, creator, image } = req.body
+    let { title, author, description, creator, image } = req.body
     creator = req.userData.id;
+
 
     let image_list = [];
     if (req.files) {
@@ -19,39 +20,37 @@ exports.createCategory = async (req, res) => {
         }
     }
 
-    const newCategory = new categoryModel({
+    const new_News = new newsModel({
         title,
         author,
-        category,
         image: image_list,
         description,
         creator
     });
-    
-    const result = await newCategory.save();
-    res.status(200).json({
-        status: "success",
-        data: {
-            result
-        }
-    });
+    const result = await new_News.save();
+    try {
+        res.status(200).json({
+            status: "success",
+            data: { result }
+        });
+    } catch (error) {
+        console.log(er);
+    }
 };
 
-exports.AllCategory = async (req, res, next) => {
-    const result = await categoryModel.find({});
+exports.AllNews = async (req, res, next) => {
+    const result = await newsModel.find({});
     res.status(200).json({ result });
 }
 
-exports.getCategory = async (req, res, next) => {
-    console.log(req.params);
-    const result = await categoryModel.findOne({
+exports.getNews = async (req, res, next) => {
+    const result = await newsModel.findOne({
         _id: ObjectId(req.params.id)
     }).populate('creator');
-    console.log(result);
-    res.status(200).json({result:result})
+    res.status(200).json({ result: result })
 }
 
-exports.updateCategory = async (req, res) => {
+exports.updateNews = async (req, res) => {
     try {
         const body = req.body;
         const updateId = body._id;
@@ -68,23 +67,24 @@ exports.updateCategory = async (req, res) => {
             }
         }
 
-        let result = await categoryModel.updateOne(
+        let result = await newsModel.updateOne(
             { _id: ObjectId(updateId) },
             {
                 ...body,
             }
         )
-        result = await categoryModel.findById(updateId);
+
+        result = await newsModel.findById(updateId);
         res.status(200).json(result);
     } catch (error) {
         res.status(400).json({ data: "Request failed", msg: error.message });
     }
 }
 
-exports.deleteCategory = async (req, res) => {
+exports.deleteNews = async (req, res) => {
     const deleteId = req.params.id;
     const query = { _id: ObjectId(deleteId) };
-    const result = await categoryModel.deleteOne(query);
-    console.log("delete hoise----> ", result);
+    const result = await newsModel.deleteOne(query);
+    console.log("You deleted a news----> ", deleteId, result);
     res.status(200).json({ status: 'success', data: result })
 }

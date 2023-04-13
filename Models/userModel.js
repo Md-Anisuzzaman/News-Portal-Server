@@ -3,7 +3,6 @@ const moment = require('moment');
 const date = moment().format('LLLL');
 
 const userSchema = new mongoose.Schema({
-
     username: {
         type: String,
         required: true

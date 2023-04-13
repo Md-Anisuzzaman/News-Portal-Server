@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
 const newsSchema = new mongoose.Schema({
 
     title: {
@@ -6,13 +7,9 @@ const newsSchema = new mongoose.Schema({
         required: true
     },
     author: {
-        type: mongoose.Types.ObjectId,
-        ref: 'user'
+        type: String,
+        required: true
     },
-    // category: {
-    //     type: mongoose.Types.ObjectId,
-    //     ref: 'category'
-    // },
     image: {
         type: 'Array',
         required: false
@@ -21,10 +18,6 @@ const newsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // slug: {
-    //     type: String,
-    //     required: false
-    // },
     creator: {
         type: mongoose.Types.ObjectId,
         ref: 'user'
