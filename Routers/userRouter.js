@@ -50,6 +50,23 @@ router.post("/login",
     ],
     userController.loginUser);
 
+router.post("/resetverify",
+    [
+        body('email')
+            .normalizeEmail()
+            .not().isEmpty().withMessage('Email is empty')
+            .isEmail().withMessage('Not of email type')
+            .custom(async (value) => {
+                let user = await userModel.findOne({
+                    email: value
+                })
+                if (!user) {
+                    return Promise.reject('Not Authenticated user email');
+                }
+            }).withMessage('Not Authenticated email'),
+    ], userController.resetVerify);
+router.post("/resetpass", userController.resetPass);
+
 router.use(authMiddleware);
 
 

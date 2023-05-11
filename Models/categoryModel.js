@@ -5,11 +5,6 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    author: {
-        type: String,
-        required: true
-    },
-    category: [],
     image: {
         type: 'Array',
         required: false

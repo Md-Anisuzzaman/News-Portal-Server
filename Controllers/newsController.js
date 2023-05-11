@@ -2,14 +2,56 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const fs = require('fs-extra')
 const newsModel = require('../Models/newsModel')
 const { uploadFile } = require('./imageUploadControler');
+const categoryNewsModel = require('../Models/categoryNewsModel');
 // const { Result } = require('express-validator');
+let category = [
+    {
+        id: 1,
+        title: 'sports'
+    },
+    {
+        id: 2,
+        title: 'politics'
+    },
+    {
+        id: 3,
+        title: 'international'
+    },
+]
+let news = [
+    {
+        id: 1,
+        title: 'News 1',
+        author: 'John',
+    },
+    {
+        id: 2,
+        title: 'News 2',
+        author: 'John',
+    },
+]
+let category_news = [
+    {
+        category_id:1,
+        news_id: 1,
+    },
+    {
+        category_id:2,
+        news_id: 1,
+    },
+    {
+        category_id:3,
+        news_id: 1,
+    },
+    {
+        category_id:1,
+        news_id: 2,
+    },
+]
 
 exports.createNews = async (req, res) => {
-
-    let { title, author, description, creator, image } = req.body
+    let { title, author, description, category, creator, image } = req.body
     creator = req.userData.id;
-
-
     let image_list = [];
     if (req.files) {
         if (req.files) {
@@ -28,6 +70,16 @@ exports.createNews = async (req, res) => {
         creator
     });
     const result = await new_News.save();
+
+    if(Array.isArray(category)){
+        category.forEach((i)=>{
+            let category_news = new categoryNewsModel({
+                news_id: result._id,
+                category_id: i,
+            });
+            category_news.save()
+        })
+    }
     try {
         res.status(200).json({
             status: "success",

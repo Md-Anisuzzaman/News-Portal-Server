@@ -14,7 +14,7 @@ const categoryNewsSchema = new mongoose.Schema({
     },
 );
 
-const categoryNewsModel = mongoose.model('category_News', categoryNewsSchema);
+const categoryNewsModel = mongoose.model('category_news', categoryNewsSchema);
 
 module.exports = categoryNewsModel;
 
